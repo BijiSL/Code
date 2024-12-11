@@ -128,4 +128,35 @@ router.delete("/project/del/:id",async(req,res)=>{
         res.status(404).send("unable to delete data");
     }
    })
+
+   router.post('/project/assign', async (req, res) => {
+    try {
+      const { projectId, mentorId } = req.body;
+      const assignment = await ProjectAssignment.create({ projectId, mentorId });
+      res.status(201).json(assignment);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to assign project' });
+    }
+  });
+  
+  // Fetch all projects
+  router.get('/projects', async (req, res) => {
+    try {
+      const projects = await project.findAll();
+      res.status(200).json(projects);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch projects' });
+    }
+  });
+  
+  // Fetch all mentors
+  router.get('/mentors', async (req, res) => {
+    try {
+      const mentors = await Mentor.findAll();
+      res.status(200).json(mentors);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch mentors' });
+    }
+  });
+  
 module.exports=router;
