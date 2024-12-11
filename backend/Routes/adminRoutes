@@ -1,0 +1,131 @@
+const express=require('express');
+const router=express.Router();
+const mentor=require('../models/mentor');
+const admin=require('../models/admin');
+const project=require('../models/project');
+router.use(express.json());
+const jwt=require('jsonwebtoken');
+
+function verifytoken(req,res,next){
+    let token=req.headers.token;
+    try{
+    if(!token) throw 'unauthorized access';
+    let payload=jwt.verify(token,'portal')
+    if(!payload) throw 'Unauthorized access'
+    next()
+    }catch(error){
+console.log(error);
+    }
+
+}
+
+router.post('/login',async(req,res)=>{
+    try{
+        const admin=await admin.findOne({email:req.body.email});
+        console.log("Admin:",admin);
+        if(admin){
+            if(admin.email==req.body.email &&
+                admin.password==req.body.password)
+                {
+                 const payload={email:admin.email,password:admin.password};
+                 const token=jwt.sign(payload,process.env.secretkey,{
+                    expiresIn:"1hr"
+                 });
+                 return res
+                 .status(200).send({message:"Login Succesful",token:token,role:"admin"});
+                }else{
+                    return res.status(400).send({message:"Invalid login credential"});
+                }
+        }
+
+  }catch(err){
+console.log(err);
+    }
+})
+
+// Add
+router.post('/admin',async(req,res)=>{
+    try {
+        var data=req.body;
+       await admin(data).save();
+        res.status(200).send("Data added successfully");
+    } catch (error) {
+        res.status(400).send('Unable to added');
+        
+    }
+})
+
+router.post('/mentor/add',async(req,res)=>{
+    try {
+        var data=req.body;
+        await mentor(data).save();
+        res.status(200).send("Data added successfully");
+    } catch (error) {
+        res.status(400).send('Unable to added');
+        
+    }})
+    //Get
+    router.get("/mentor/get",async(req,res)=>{
+        try {
+            var data=await mentor.find();
+            res.status(200).send(data);
+            
+        } catch (error) {
+            res.status(404).send("unable to getdata");
+        
+        }
+      
+})
+
+// Delete
+router.delete("/mentor/del/:id",async(req,res)=>{
+    try {
+        await mentor.findByIdAndDelete(req.params.id);
+        res.status(200).send("deleted successfully");
+    } catch (error) {
+        res.status(404).send("unable to delete data");
+    }
+   })
+
+//    Edit
+router.put("/mentor/edit/:id",async(req,res)=>{
+    try {
+        await mentor.findByIdAndUpdate(req.params.id,req.body);
+        res.status(200).send("edited successfully");
+          } catch (error) {
+        res.status(404).send("unable to edit data");
+   }
+  })
+
+// Project add
+router.post('/project/add',async(req,res)=>{
+    try {
+        var data=req.body;
+        await project(data).save();
+        res.status(200).send("Project added successfully");
+    } catch (error) {
+        res.status(400).send('Unable to added');
+        
+    }})
+
+    // Project Get
+    router.get("/project/get",async(req,res)=>{
+        try {
+            var data=await project.find();
+            res.status(200).send(data);
+            
+        } catch (error) {
+            res.status(404).send("unable to getdata");
+        
+        }
+      
+})
+router.delete("/project/del/:id",async(req,res)=>{
+    try {
+        await project.findByIdAndDelete(req.params.id);
+        res.status(200).send("deleted successfully");
+    } catch (error) {
+        res.status(404).send("unable to delete data");
+    }
+   })
+module.exports=router;
