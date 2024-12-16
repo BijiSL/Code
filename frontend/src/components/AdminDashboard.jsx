@@ -1,10 +1,9 @@
 import React from 'react'
-import { AppBar, Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material'
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Typography } from '@mui/material'
 import axiosInstance from './axiosinterceptors';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import axios from 'axios';
 
 
 const AdminDashboard = () => {
@@ -12,13 +11,14 @@ const AdminDashboard = () => {
   const [mentors, setMentors] = useState([]);
   const [projects, setProjects] = useState([]);
   useEffect(()=>{
-    fetchmentor();},[]);
+    fetchmentor();
+  },[]);
     const fetchmentor=()=>{
    
 axiosInstance
 .get('http://localhost:4000/admin/mentor/get',mentors)
 .then((res)=>{
-    // console.log(res.data)
+  // console.log(res.data)
   setMentors(res.data);
     }) .catch((err) => {
       console.error('Error fetching mentors:', err);
@@ -28,7 +28,7 @@ useEffect(()=>{
 fetchproject();},[]);
 
 const fetchproject=()=>{
-axiosInstance.get('http://localhost:4000/admin/project/get')
+axiosInstance.get('http://localhost:4000/admin/project/get',projects)
 .then((res)=>{
 //  console.log(res.data)
 setProjects(res.data);
@@ -57,16 +57,25 @@ const mentordelete=(id)=>{
       navigate('/addmentor',{state:{val}})
      }
   
+    //  function updateProject(val){
+    //   navigate('/project',{state:{val}})
+    //  }
     //  const updateMentor = (mentor) => {
     //   navigate('/addmentor', { state: { mentor } }); // Pass the mentor data for update
     // };
   
-    // const updateProject = (project) => {
-    //   navigate('/project', { state: { project } }); // Pass the project data for update
-    // };
+    const updateProject = (project) => {
+      navigate('/project', { state: { project } }); // Pass the project data for update
+    };
   return (
     <div>
-      <TableContainer>
+      <TableContainer style={{
+      marginTop: '60% auto',
+      padding: '10px',
+      border: '1px solid #ddd',
+      borderRadius: '8px',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -128,7 +137,7 @@ const mentordelete=(id)=>{
               <TableRow key={project._id}>
                 <TableCell align="left">{project.title}</TableCell>
                 <TableCell align="right">
-                  <Button
+                  <Button a="true"
                     variant="contained"
                     style={{ marginRight: '10px' }}
                     onClick={() => updateProject(project)}

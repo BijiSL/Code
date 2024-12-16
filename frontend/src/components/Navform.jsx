@@ -1,7 +1,7 @@
 import React from 'react'
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
 
-const MentorDashboard = () => {
+const Navform = () => {
   return (
     <div>
 <Box sx={{ flexGrow: 1 }} >
@@ -14,9 +14,9 @@ const MentorDashboard = () => {
        <Typography variant="h6" component="div" sx={{ flexGrow: 1 ,textAlign:'left'}}>
             Mentor Dashboard
           </Typography>
-          <Button color="inherit"sx={{fontSize:'15px'}}><h3>Projects</h3></Button>
-          <Button color="inherit" sx={{fontSize:'15px'}}><h3>Evaluation </h3> </Button>
-                   <Button color="inherit" sx={{fontSize:'15px'}} a href='/'><h3>Logout</h3></Button>
+          {/* <Button color="inherit"sx={{fontSize:'15px'}}><h3>Projects</h3></Button>
+          <Button color="inherit" sx={{fontSize:'15px'}}><h3>Evaluation </h3> </Button> */}
+                   <Button color="inherit" sx={{fontSize:'15px'}}  href='/'><h3>Logout</h3></Button>
         </Toolbar>
       </AppBar>
     </Box>
@@ -24,4 +24,4 @@ const MentorDashboard = () => {
   )
 }
 
-export default MentorDashboard
+export default Navform;

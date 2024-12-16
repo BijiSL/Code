@@ -18,7 +18,7 @@ const Navbar = () => {
           <Button color="inherit"sx={{fontSize:'15px'}} href='/addmentor'><h3>Add Mentor</h3></Button>
           <Button color="inherit" sx={{fontSize:'15px'}}href='/project'><h3>Add Projects </h3> </Button>
           {/* <Button color="inherit" sx={{fontSize:'15px'}}><h3>Marks </h3> </Button> */}
-          <Button color="inherit" sx={{fontSize:'15px'}} a href='/'><h3>Logout</h3></Button>
+          <Button color="inherit" sx={{fontSize:'15px'}}  href='/'><h3>Logout</h3></Button>
         </Toolbar>
       </AppBar>
     </Box>

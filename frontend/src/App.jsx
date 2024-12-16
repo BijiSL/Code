@@ -9,20 +9,22 @@ import Addmentor from './components/Addmentor'
 import Addproject from './components/Addproject'
 import Main from './components/Main'
 import Mainmen from './components/Mainmen'
+import Submission from './components/Submission'
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-    {/* <Login/> */}
+
      <Routes>
       <Route path='/' element={<Home/>}/>
+      <Route path='/mentor' element={<MentorDashboard/>}/>
       <Route path='/login' element={<Login/>}/>
       {/* <Route path='/admin' element={<AdminDashboard/>}/> */}
     <Route path='/admin' element={<Main child={<AdminDashboard/>}/>}/> 
-      <Route path='/mentor' element={<Mainmen child={<MentorDashboard/>}/>}/>
+      {/* <Route path='/mentor' element={<Mainmen child={<MentorDashboard/>}/>}/> */}
       <Route path='/addmentor' element={<Main child={<Addmentor/>}/>}/>
       <Route path='/project' element={<Main child={<Addproject/>}/>}/>
+      <Route path='/sub' element={<Submission/>}/>
 
      </Routes>
     </>

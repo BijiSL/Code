@@ -15,8 +15,8 @@ const Home = () => {
        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             ICTK Internship Portal
           </Typography>
-          <Button color="inherit">HOME</Button>
-          <Button color="inherit">CONTACTS  </Button>
+          {/* <Button color="inherit">HOME</Button>
+          <Button color="inherit">CONTACTS  </Button> */}
           <Button color="inherit" a href='/login'>LOGIN</Button>
         </Toolbar>
       </AppBar>

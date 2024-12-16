@@ -9,6 +9,7 @@ const Addproject = () => {
   const [mentors, setMentors] = useState([]);
   const [selectedProject, setSelectedProject] = useState('');
   const [selectedMentor, setSelectedMentor] = useState('');
+  
   useEffect(() => {
     // Fetching projects and mentors
     axios.get('http://localhost:4000/admin/project/get').then((res) => {
@@ -21,6 +22,7 @@ const Addproject = () => {
     });
   }, []);
   const inputhandler=(e)=>{
+    // console.log('here')
       setUsers({...users,[e.target.name]:e.target.value})
   }
   const submit=()=>{
@@ -33,24 +35,35 @@ console.log(res)
 console.log(error);
       })
     }
-  const assign=() => {
-    const assignment = { projectId: selectedProject, mentorId: selectedMentor };
-    console.log('Assigning:', assignment);
-    axios.post('http://localhost:4000/admin/project/assign', assignment)
-      .then((res) => {
-        console.log('Project assigned:', res.data);
-      })
-      .catch((error) => {
-        console.error('Error assigning project:', error);
-      });
-  };
 
+  const handleSelectChange = (e) => {
+    setSelectedProject(e.target.value)
+  }
     
+  
+  const handleMentorSelectChange = (e) => {
+    setSelectedMentor(e.target.value)
+  }
+    
+  console.log('test projects', mentors);
+  // Assign
+  const assign = async () => {
+    try {
+      await axios.post('http://localhost:4000/admin/assignProject', {
+        project_id: selectedProject,
+        mentor_id: selectedMentor,
+      });
+      alert('Project assigned successfully');
+    } catch (error) {
+      console.error(error);
+      alert('Error assigning project');
+    }
+  };
   
 return (
  
   <div className="container">
-     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
          <b> ADD PROJECT</b>
         </Typography>
 <TextField className="input-field" variant='outlined' type='name' label="Name" name='title' onChange={inputhandler}/>
@@ -62,20 +75,21 @@ return (
       
   </div>
 <div>
-<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+<Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
          <b> ASSIGN PROJECT</b>
         </Typography>
   <FormControl fullWidth>
     
-  <InputLabel id="demo-simple-select-label">Project</InputLabel>
+  <InputLabel id="project-select-label">Project</InputLabel>
   <Select
-    labelId="demo-simple-select-label"
-    id="demo-simple-select"
+    labelId="project-select-label"
+    id="project-select"
+    value={selectedProject || ''}
     name='title'
-    onChange={inputhandler}
+    onChange={handleSelectChange}
   >
     {projects.map((project) => (
-              <MenuItem key={project.id} value={project.id}>
+              <MenuItem key={project._id} value={project._id}>
                 {project.title}
               </MenuItem>))}
   </Select>
@@ -89,10 +103,11 @@ return (
     <Select
       labelId="demo-simple-select-label"
       id="demo-simple-select" name='name'
-      onChange={inputhandler}
+      value={selectedMentor}
+      onChange={handleMentorSelectChange}
     >
       {mentors.map((mentor) => (
-        <MenuItem key={mentor.id} value={mentor.id}>
+        <MenuItem key={mentor._id} value={mentor._id}>
           {mentor.name}
         </MenuItem>
       ))}

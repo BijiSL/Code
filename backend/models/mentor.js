@@ -1,12 +1,11 @@
 const mongoose=require('mongoose');
 const mentorSchema=mongoose.Schema({
   name: String,
-  email:String,
-  // email: { type: String, unique: true },
+  email:{ type: String, unique: true },
   phone: String,
-  password: String
-  //Projects:String
-  // projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }],
+  password: String,
+  // project:String
+  project: [{ type: mongoose.Schema.Types.ObjectId, ref: 'project' }],
 })
 
 const mentor=mongoose.model('mentors',mentorSchema);

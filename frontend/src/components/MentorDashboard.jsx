@@ -1,64 +1,68 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { AppBar, Box, Button, Card, CardActions, CardContent, TextField, Toolbar, Typography } from '@mui/material'
+import React, { useState } from 'react'
+import axios from "axios"
 
 const MentorDashboard = () => {
-  const [projects, setProjects] = useState([]);
+  const [title,setTitle]=useState("");
+  const[file,setFile]=useState("");
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      const res = await axios.get('http://localhost:5000/mentor/dashboard', {
-        params: { mentorId: 'MENTOR_ID_HERE' },
-      });
-      setProjects(res.data);
-    };
+  const submitImage = async(e) => {
+    e.preventDefault();
+const formData=new FormData();
+formData.append("title",title);
+formData.append("file",file);
+console.log(title,file);
+const result =await axios.post("http://localhost:4000/mentor/upload-files",formData,{
+headers:{"content-type":"multipart/form-data"},
 
-    fetchProjects();
-  }, []);
-
+  });
+  console.log(result);
+}
   return (
+   
     <div>
-      <h1>Mentor Dashboard</h1>
-      {projects.map((project) => (
-        <div key={project._id}>
-          <h2>{project.title}</h2>
-          <ul>
-            {project.submissions.map((submission) => (
-              <li key={submission._id}>
-                {submission.student} - {submission.status}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-  );
-};
+      <Box sx={{ flexGrow: 1 }} >
+      <AppBar position="fixed" >
+        <Toolbar >
+        <img src="images/logo.png"
+        alt="Logo"
+        style={{ height: '100px', marginRight: '90px' }} 
+      />
+       <Typography variant="h6" component="div" sx={{ flexGrow: 1 ,textAlign:'left'}}>
+            Mentor Dashboard
+          </Typography>
+          <Button color="inherit" sx={{fontSize:'15px'}}  href='/'><h3>Logout</h3></Button>
+        </Toolbar>
+      </AppBar>
+    </Box>
+    
+    <Card sx={{ width: 300, marginTop: '10%', padding: 2  }}>
+    <CardContent>
+      <Typography gutterBottom sx={{ color: 'black', fontSize: 25}}>
+        Projects
+      </Typography>
+    </CardContent>
+    <CardActions>
+      <Button size="small" href='/sub'>View Submissions</Button>
+    </CardActions>
+  </Card><br/><br/>
+   <Typography gutterBottom sx={{ color: 'black', fontSize: 25}}>
+      Reference Material
+      </Typography>
+      <form onSubmit={submitImage}>
+        <input type='text' placeholder='Title' required 
+        onChange={(e)=>setTitle(e.target.value)}/>
+        <input variant='outlined' type='file' accept='application/pdf' required 
+        onChange={(e)=>setFile(e.target.files[0])}/>
+<br/><br/>
+   
+        {/* <TextField type='text' label='Reference Material' sx={{width:500}} /><br/><br/> */}
+  <Button variant='outlined' type='submit'>Submit</Button>
+  <Button variant='outlined'>Delete</Button>
+  </form>
+  </div>
+  
+  )
+}
 
-export default MentorDashboard;
-// import React from 'react'
-// import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
-
-// const MentorDashboard = () => {
-//   return (
-//     <div>
-// <Box sx={{ flexGrow: 1 }} >
-//       <AppBar position="fixed" >
-//         <Toolbar >
-//         <img src="images/logo.png"
-//         alt="Logo"
-//         style={{ height: '100px', marginRight: '90px' }} 
-//       />
-//        <Typography variant="h6" component="div" sx={{ flexGrow: 1 ,textAlign:'left'}}>
-//             Admin Dashboard
-//           </Typography>
-//           <Button color="inherit"sx={{fontSize:'15px'}}><h3>Projects</h3></Button>
-//           <Button color="inherit" sx={{fontSize:'15px'}}><h3>Evaluation </h3> </Button>
-//                    <Button color="inherit" sx={{fontSize:'15px'}} a href='/home'><h3>Logout</h3></Button>
-//         </Toolbar>
-//       </AppBar>
-//     </Box>
-//     </div>
-//   )
-// }
-
-// export default MentorDashboard
+export default MentorDashboard
