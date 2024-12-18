@@ -1,14 +1,10 @@
-// const express=require('express');
-// const router=express.Router();
-// const project=require('../models/project');
-
 const mongoose=require('mongoose')
 const express = require('express');
 const router = express.Router();
 const Project = require('../models/project');
-const Submission = require('../models/submission');
 const ReferenceMaterial = require('../models/reference');
 const multer = require("multer");
+// const submission = require('../models/submission');
 router.use(express.json());
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -53,62 +49,51 @@ router.get("/", async (req, res) => {
 
 
 // Get all projects assigned to the mentor
-// router.get('/projects', async (req, res) => {
-//   try {
-//     const mentor_id = req.mentor_id; // Assuming `req.user` contains authenticated mentor details
-//     const projects = await Project.find({ mentor: mentor_id }).populate('submissions');
-//     res.json(projects);
-//   } catch (err) {
-//     res.status(500).json({ error: 'Failed to fetch projects' });
-//   }
-// });
+router.get('/projects', async (req, res) => {
+  try {
+    const mentorId = req.mentor._id; // Assuming `req.user` contains authenticated mentor details
+    const projects = await Project.find({ mentor: mentorId });
+   
+    if (!projects.length) {
+      return res.status(404).json({ message: "No projects found for this mentor" });
+    }
 
+    res.json({ status: "success", data: projects });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch projects" });
+  }
+});
 
-// // Evaluate submission
-// router.put('/submissions/:id', async (req, res) => {
-//   try {
-//     const { marks, comments, status } = req.body;
-//     const submission = await Submission.findByIdAndUpdate(
-//       req.params.id,
-//       { marks, comments, status },
-//       { new: true }
-//     );
-//     res.json(submission);
-//   } catch (err) {
-//     res.status(500).json({ error: 'Failed to evaluate submission' });
-//   }
-// });
+router.get('/submission/get',async(req,res)=>{
+  const projects=await Project.find();
+  res.json(projects);
+});
+
+router.post('/submissions',async(req,res)=>{
+  const {student,status,marks,comments}=req.body;
+  const newSubmission=new Project({student,status,marks,comments});
+  await newSubmission.save();
+  res.json(newSubmission);
+});
+
+router.put('/submission/update/:id',async(req,res)=>{
+  const updateSubmission=await Project.findByIdAndUpdate(req.params.id,req.body,{new:true});
+  res.json(updateSubmission);
+});
+
 
 // // Delete submission
-// router.delete('/submissions/:id', async (req, res) => {
-//   try {
-//     await Submission.findByIdAndDelete(req.params.id);
-//     res.json({ message: 'Submission deleted' });
-//   } catch (err) {
-//     res.status(500).json({ error: 'Failed to delete submission' });
-//   }
-// });
+router.delete('/submission/delete/:id', async (req, res) => {
+  try {
+    await Project.findByIdAndDelete(req.params.id);
+    res.json({ message: 'Submission deleted' });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to delete submission' });
+  }
+});
 
-// // Add reference material
-// router.post('/materials', async (req, res) => {
-//   try {
-//     const { title, link, project } = req.body;
-//     const material = new ReferenceMaterial({ title, link, project, mentor: req.user.id });
-//     await material.save();
-//     res.json(material);
-//   } catch (err) {
-//     res.status(500).json({ error: 'Failed to add reference material' });
-//   }
-// });
 
-// // Delete reference material
-// router.delete('/materials/:id', async (req, res) => {
-//   try {
-//     await ReferenceMaterial.findByIdAndDelete(req.params.id);
-//     res.json({ message: 'Reference material deleted' });
-//   } catch (err) {
-//     res.status(500).json({ error: 'Failed to delete reference material' });
-//   }
-// });
+
 
 module.exports = router;

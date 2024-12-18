@@ -10,6 +10,7 @@ const AdminDashboard = () => {
   const navigate=useNavigate();
   const [mentors, setMentors] = useState([]);
   const [projects, setProjects] = useState([]);
+  
   useEffect(()=>{
     fetchmentor();
   },[]);
@@ -68,14 +69,21 @@ const mentordelete=(id)=>{
       navigate('/project', { state: { project } }); // Pass the project data for update
     };
   return (
-    <div>
-      <TableContainer style={{
-      marginTop: '60% auto',
-      padding: '10px',
-      border: '1px solid #ddd',
-      borderRadius: '8px',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    <div  style={{
+      backgroundImage: "url('public/images/admindash.jpg')",
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      minHeight: '100vh',
+      padding: '20px',
     }}>
+      <TableContainer  style={{
+          margin: '0 auto',
+          padding: '10px',
+          border: '1px solid #ddd',
+          borderRadius: '8px',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -117,9 +125,15 @@ const mentordelete=(id)=>{
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer >
 
-      <TableContainer className="t1" style={{ marginTop: '20px' }}>
+      <TableContainer className="t1" style={{
+          margin: '20px auto',
+          padding: '10px',
+          border: '1px solid #ddd',
+          borderRadius: '8px',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        }}>
         <Table>
           <TableHead>
             <TableRow>

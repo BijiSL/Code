@@ -1,10 +1,32 @@
 import { AppBar, Box, Button, Card, CardActions, CardContent, TextField, Toolbar, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from "axios"
+
 
 const MentorDashboard = () => {
   const [title,setTitle]=useState("");
   const[file,setFile]=useState("");
+
+  const[projects,setProjects]=useState([]);
+  useEffect(()=>{
+    const fetchProjects=async()=>{
+      const mentorId=sessionStorage.getItem("mentorId");
+      console.log("mentorId",mentorId);
+      if(!mentorId){
+        console.log("Mentor Id not found");
+      
+      return;
+    }
+    try {
+      const res=await axios.get(`http://localhost:4000/mentor/projects/${mentorId}`);
+      console.log("projects response:",res.data);
+      setProjects(res.data.projects);
+    } catch (error) {
+      console.log("Error Fetching",error);
+    }
+  
+  }
+  fetchProjects()},[]);
 
   const submitImage = async(e) => {
     e.preventDefault();
@@ -37,10 +59,11 @@ headers:{"content-type":"multipart/form-data"},
     </Box>
     
     <Card sx={{ width: 300, marginTop: '10%', padding: 2  }}>
-    <CardContent>
+          <CardContent>
       <Typography gutterBottom sx={{ color: 'black', fontSize: 25}}>
         Projects
       </Typography>
+      
     </CardContent>
     <CardActions>
       <Button size="small" href='/sub'>View Submissions</Button>

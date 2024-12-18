@@ -53,14 +53,29 @@ const Addmentor = () => {
   };
 
   return (
+    <div style={{
+      backgroundImage: "url('public/images/addmentor.avif')",
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      height: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
     <Box 
       component="form"
-      sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' },marginTop:20, paddingLeft: '40%'}}
+      sx={{
+        '& .MuiTextField-root': { m: 1 },
+            padding: '30px',
+        borderRadius: '8px',
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+      }}
       noValidate
       autoComplete="off"
     >
-      <div>
-        <Typography variant="h3" component="div" sx={{ flexGrow: 1 }}>
+     
+        <Typography variant="h3" component="div" sx={{ flexGrow: 1 ,color:'brown'}}>
           <b>Add Mentor</b>
         </Typography>
         <TextField
@@ -114,8 +129,9 @@ const Addmentor = () => {
         <Button variant="contained" color="success" href="/admin">
           Back
         </Button>
-      </div>
+   
     </Box>
+    </div>
   );
 };
 

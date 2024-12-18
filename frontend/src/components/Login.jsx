@@ -1,71 +1,8 @@
-// import { Box, Button, TextField, Typography } from '@mui/material'
-// import React, { useState } from 'react'
-// import { useNavigate } from 'react-router-dom';
-// import axios from 'axios';
-// import axiosInstance from './axiosinterceptors';
-
-// const Login = () => {
-//   const navigate=useNavigate();
-//   const [loginForm,setLoginForm]=useState({email:'',password:''});
-// //   const inputhandler=(e)=>{
-// //     setLoginForm({...loginForm,[e.target.name]:e.target.value})
-// // }
-// const capValue=async(e)=>{
-//   e.preventDefault(); 
-//   // console.log(loginForm);
-//   try   {
-//     const res= axiosInstance.post('http://localhost:4000/admin/login',loginForm)
-//     //  .then((res)=>{
-//       console.log(res.data);
-// alert(res.data.message);
-// if(res.data.token){
-//   sessionStorage.setItem('token',res.data.token);
-//   if(res.data.role==="admin"){
-//     navigate('/admin');
-//   }else if(res.data.role==="mentor"){
-//     navigate('/mentor');
-//   }else{
-//     navigate("/login")
-//   }
-// }else{ 
-// navigate('/');
-
-// }}catch(error){
-// console.log(error);
-// alert("Invalid Credentials");
-// }
-// }
-//   return (
-//     <Box
-//       component="form"
-//       sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }}
-//       noValidate
-//       autoComplete="off"
-//     >
-//     <div>
-//        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-//             LOGIN
-//           </Typography>
-// <TextField variant='outlined' type='email' label="Email" name='email' value={loginForm.email} onChange={(e)=>{
-//           setLoginForm({...loginForm,email:e.target.value})
-//         }} />
-//        <br/><br/>
-//        <TextField variant='outlined' type='password' label="Password" name='password'  value={loginForm.password} onChange={(e)=>{
-//           setLoginForm({...loginForm,password:e.target.value})
-//         }} />
-//        <br/><br/>
-//        <Button variant='contained' type='submit' color='success' onClick={capValue}>Login</Button> 
-        
-//     </div>
-//     </Box>
-//   )
-// }
-
-// export default Login
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
+import shadows from '@mui/material/styles/shadows';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -78,18 +15,78 @@ const Login = () => {
             const { data } = await axios.post('http://localhost:4000/admin/login', { email, password });
             localStorage.setItem('role', data.role);
             localStorage.setItem('token', data.token);
+            // const mentorId = localStorage.setItem('mentorId');
             navigate(data.role === 'admin' ? '/admin' : '/mentor');
         } catch (error) {
             alert('Invalid Credentials');
-        }
-    };
+        } };
 
     return (
-        <div className="login">
-            <form onSubmit={handleLogin}>
-                <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} required />
-                <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} required />
-                <button type="submit">Login</button>
+        
+        <div className="login" style={{
+            display: 'flex',
+            justifyContent: 'right',
+            alignItems: 'center',
+            height: '100vh',
+            backgroundColor: '#f5f5f5',
+            backgroundImage: "url('public/images/Login.avif')",
+      backgroundSize: 'cover', 
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+            height: '100vh',
+      width: '100vw', 
+    
+        }}>
+            <Box sx={{ flexGrow: 1 ,marginBottom:'40%'}}>
+      <AppBar position="static" sx={{backgroundColor: 'transparent',
+            boxShadow: 'none' }}>
+      <Toolbar >
+        <img src="images/logo.png"
+        alt="Logo"
+        style={{ height: '100px', marginRight: '90px' }} 
+      />
+       <Typography variant="h6" component="div" sx={{ flexGrow: 1,}}>
+            <h2>ICTK Internship Portal</h2>
+          </Typography>
+           <Button position='marginRight' color="inherit" a href='/'><h2>Home</h2></Button>
+
+          </Toolbar></AppBar></Box>
+            <form onSubmit={handleLogin}
+             style={{
+                display: 'flex',
+                marginRight:'10%',
+                flexDirection: 'column',
+                formshadows:'none',
+                gap: '15px',
+                backgroundColor: '#fff',
+                padding: '30px',
+                borderRadius: '8px',
+                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+            }}
+        >
+                <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} required
+                 style={{
+                    padding: '10px',
+                    fontSize: '16px',
+                    border: '1px solid #ccc',
+                    borderRadius: '5px',
+                }} /><br/><br/>
+                <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} required 
+                 style={{
+                    padding: '10px',
+                    fontSize: '16px',
+                    border: '1px solid #ccc',
+                    borderRadius: '5px',
+                }}/><br/><br/>
+                <button type="submit" style={{
+                        padding: '10px',
+                        fontSize: '16px',
+                        color: '#fff',
+                        backgroundColor: '#007BFF',
+                        border: 'none',
+                        borderRadius: '5px',
+                        cursor: 'pointer',
+                    }}>Login</button>
             </form>
         </div>
     );
