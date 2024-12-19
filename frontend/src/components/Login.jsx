@@ -13,37 +13,37 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
-        axiosInstance.post("http://localhost:4000/admin/login",loginForm)
-        .then((res)=>{
-            toast.success(res.data.message);
-            if(res.data.token){
-                sessionStorage.setItem("token",res.data.token);
-                if(res.data.role==="admin"){
-                    console.log("Role:", res.data.role);
-                    navigate('/admin');
-                }else if(res.data.role==="mentor" && res.data.mentorId){
-                    sessionStorage.setItem("mentorId",res.data.mentorId);
-                    console.log("MentorId:", res.data.mentorId);
-                    navigate('/mentor');
-                }else{
-                    navigate('/login');
-                }
-            }
-        })
-    .catch((error)=>{
-        console.log(error);
-        toast.error("inavalid")
-    })}
-        // e.preventDefault();
-        // 
-        //     const { data } = await axiosInstance.post('http://localhost:4000/admin/login', { email, password });
-        //     localStorage.setItem('role', data.role);
-        //     localStorage.setItem('token', data.token);
-        //    const mentorId = localStorage.setItem('mentorId',data.mentorId);
-        //     navigate(data.role === 'admin' ? '/admin' : '/mentor');
-        // } catch (error) {
-        //     alert('Invalid Credentials');
-        // } };
+    //     axiosInstance.post("http://localhost:4000/admin/login",loginForm)
+    //     .then((res)=>{
+    //         toast.success(res.data.message);
+    //         if(res.data.token){
+    //             sessionStorage.setItem("token",res.data.token);
+    //             if(res.data.role==="admin"){
+    //                 console.log("Role:", res.data.role);
+    //                 navigate('/admin');
+    //             }else if(res.data.role==="mentor" && res.data.mentorId){
+    //                 sessionStorage.setItem("mentorId",res.data.mentorId);
+    //                 console.log("MentorId:", res.data.mentorId);
+    //                 navigate('/mentor');
+    //             }else{
+    //                 navigate('/login');
+    //             }
+    //         }
+    //     })
+    // .catch((error)=>{
+    //     console.log(error);
+    //     toast.error("inavalid")
+    // })}
+        e.preventDefault();
+        try{
+            const { data } = await axiosInstance.post('http://localhost:4000/admin/login', { email, password });
+            localStorage.setItem('role', data.role);
+            localStorage.setItem('token', data.token);
+           const mentorId = localStorage.setItem('mentorId',data.mentorId);
+            navigate(data.role === 'admin' ? '/admin' : '/mentor');
+        } catch (error) {
+            alert('Invalid Credentials');
+        } };
 
     return (
         
