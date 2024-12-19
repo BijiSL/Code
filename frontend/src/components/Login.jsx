@@ -1,25 +1,49 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import axiosInstance from './axiosinterceptors'
 import { useNavigate } from 'react-router-dom';
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import shadows from '@mui/material/styles/shadows';
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loginForm,setLoginForm]=useState('');
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
-        e.preventDefault();
-        try {
-            const { data } = await axios.post('http://localhost:4000/admin/login', { email, password });
-            localStorage.setItem('role', data.role);
-            localStorage.setItem('token', data.token);
-            // const mentorId = localStorage.setItem('mentorId');
-            navigate(data.role === 'admin' ? '/admin' : '/mentor');
-        } catch (error) {
-            alert('Invalid Credentials');
-        } };
+        axiosInstance.post("http://localhost:4000/admin/login",loginForm)
+        .then((res)=>{
+            toast.success(res.data.message);
+            if(res.data.token){
+                sessionStorage.setItem("token",res.data.token);
+                if(res.data.role==="admin"){
+                    console.log("Role:", res.data.role);
+                    navigate('/admin');
+                }else if(res.data.role==="mentor" && res.data.mentorId){
+                    sessionStorage.setItem("mentorId",res.data.mentorId);
+                    console.log("MentorId:", res.data.mentorId);
+                    navigate('/mentor');
+                }else{
+                    navigate('/login');
+                }
+            }
+        })
+    .catch((error)=>{
+        console.log(error);
+        toast.error("inavalid")
+    })}
+        // e.preventDefault();
+        // 
+        //     const { data } = await axiosInstance.post('http://localhost:4000/admin/login', { email, password });
+        //     localStorage.setItem('role', data.role);
+        //     localStorage.setItem('token', data.token);
+        //    const mentorId = localStorage.setItem('mentorId',data.mentorId);
+        //     navigate(data.role === 'admin' ? '/admin' : '/mentor');
+        // } catch (error) {
+        //     alert('Invalid Credentials');
+        // } };
 
     return (
         
@@ -78,7 +102,7 @@ const Login = () => {
                     border: '1px solid #ccc',
                     borderRadius: '5px',
                 }}/><br/><br/>
-                <button type="submit" style={{
+                <button  type="submit" style={{
                         padding: '10px',
                         fontSize: '16px',
                         color: '#fff',

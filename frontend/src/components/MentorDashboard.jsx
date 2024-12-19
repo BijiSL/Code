@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, Card, CardActions, CardContent, TextField, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, Button, Card, CardActions, CardContent, FormControl, InputLabel, ListItem, ListItemText, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Toolbar, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import axios from "axios"
 
@@ -6,14 +6,18 @@ import axios from "axios"
 const MentorDashboard = () => {
   const [title,setTitle]=useState("");
   const[file,setFile]=useState("");
-
+  
+  const [filter,setFilter]=useState("");
   const[projects,setProjects]=useState([]);
   useEffect(()=>{
     const fetchProjects=async()=>{
+      // sessionStorage.setItem("mentorId","");
       const mentorId=sessionStorage.getItem("mentorId");
-      console.log("mentorId",mentorId);
+      console.log("Retrieved mentorId from sessionStorage:",mentorId);
       if(!mentorId){
         console.log("Mentor Id not found");
+        // alert("Please log in again."); // Optional: Alert the user.
+        // window.location.href = "/login";
       
       return;
     }
@@ -57,18 +61,29 @@ headers:{"content-type":"multipart/form-data"},
         </Toolbar>
       </AppBar>
     </Box>
-    
-    <Card sx={{ width: 300, marginTop: '10%', padding: 2  }}>
-          <CardContent>
-      <Typography gutterBottom sx={{ color: 'black', fontSize: 25}}>
+    <Typography gutterBottom sx={{ color: 'black', fontSize: 25}}>
         Projects
       </Typography>
+    <Card sx={{ width: 300, marginTop: '10%', padding: 2  }}>
+          <CardContent>
+          {projects.map((project)=>{
+<ListItem key={project._id}>
+  <ListItemText primary={project.title}
+  // secondary={projects.description}
+  />
+   <Button size="small" href='/sub'>View Submissions</Button>
+   </ListItem>
+          })}
+      
       
     </CardContent>
     <CardActions>
-      <Button size="small" href='/sub'>View Submissions</Button>
+     
     </CardActions>
   </Card><br/><br/>
+ 
+
+
    <Typography gutterBottom sx={{ color: 'black', fontSize: 25}}>
       Reference Material
       </Typography>

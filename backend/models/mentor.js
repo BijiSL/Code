@@ -5,7 +5,7 @@ const mentorSchema=mongoose.Schema({
   phone: String,
   password: String,
   // project:String
-  project: [{ type: mongoose.Schema.Types.ObjectId, ref: 'project' }],
+  projectassign: [{ type: mongoose.Schema.Types.ObjectId, ref: 'project' }],
 })
 
 const mentor=mongoose.model('mentors',mentorSchema);

@@ -182,7 +182,7 @@ router.delete("/project/del/:id",async(req,res)=>{
   });
 
 //   Assign project to mentor
-router.post("/assignproject",async(req,res)=>{
+router.post("/assignProject",async(req,res)=>{
     const { mentor_id, project_id } = req.body;
   try {
     const mentor=await mentorModel.findById( mentor_id);
@@ -201,7 +201,7 @@ router.post("/assignproject",async(req,res)=>{
     }
     project.projectassign=mentor_id;
     await project.save();
-    mentor.project.push(project_id);
+    mentor.projectassign.push(project_id);
     await mentor.save();
     res.status(200).send({message:"Project assigned successfully"});
   } catch (error) {

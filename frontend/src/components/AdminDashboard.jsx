@@ -31,7 +31,7 @@ fetchproject();},[]);
 const fetchproject=()=>{
 axiosInstance.get('http://localhost:4000/admin/project/get',projects)
 .then((res)=>{
-//  console.log(res.data)
+console.log(res.data)
 setProjects(res.data);
 })
 .catch((err)=>{
@@ -96,6 +96,7 @@ const mentordelete=(id)=>{
               <TableCell align="right">Email</TableCell>
               <TableCell align="right">Phone</TableCell>
               <TableCell align="right">Password</TableCell>
+              <TableCell align="right">Assigned Project</TableCell>
               </TableRow>
           </TableHead>
           <TableBody>
@@ -105,6 +106,7 @@ const mentordelete=(id)=>{
                 <TableCell align="right">{mentor.email}</TableCell>
                 <TableCell align="right">{mentor.phone}</TableCell>
                 <TableCell align="right">{mentor.password}</TableCell>
+                <TableCell align="right">{mentor.projectassign}</TableCell>
                 <TableCell align="right">
                   <Button a="true"
                     variant="contained"
@@ -148,7 +150,7 @@ const mentordelete=(id)=>{
           </TableHead>
           <TableBody>
             {projects.map((project) => (
-              <TableRow key={project._id}>
+              <TableRow key={project.title}>
                 <TableCell align="left">{project.title}</TableCell>
                 <TableCell align="right">
                   <Button a="true"
